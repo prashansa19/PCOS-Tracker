@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from predictor.views import home_page,general_create_view,medical_create_view,result_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home_page, name='home'),
+    path('general/', general_create_view, name='general_create_view'),
+    path('medical/', medical_create_view, name='medical_create_view'),
+    path('result/<int:pk>/', result_view, name='result_view'),
 ]

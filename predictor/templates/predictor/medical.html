@@ -1,0 +1,70 @@
+<!-- templates/medical.html -->
+{% extends "base.html" %}
+
+{% block title %}Medical Diagnosis{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 40px 30px; max-width: 900px; margin: auto; }
+    .row > div { margin-bottom: 15px; }
+    label { font-weight: 600; }
+    input[readonly] { background-color: #e9ecef; }
+    .btn-save { width: 150px; margin: 30px auto 0 auto; font-size: 1.1rem; padding: 10px 0; border-radius: 8px; display: block; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="form-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">&larr; Back to Home</a>
+            <h2 class="m-0 flex-grow-1 text-center">Medical Diagnosis Form</h2>
+            <div style="width: 100px;"></div>
+        </div>
+
+        <form method="POST" action=".">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% for field in form.visible_fields|slice:"0:21" %}
+                        {{ field.label_tag }}<br/>{{ field }}<br/>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    {% for field in form.visible_fields|slice:"21:" %}
+                        {{ field.label_tag }}<br/>{{ field }}<br/>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <input type="submit" value="Predict" class="btn btn-success btn-save" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function calculateBMI() {
+        const weight = parseFloat(document.getElementById('id_weight').value);
+        const height = parseFloat(document.getElementById('id_height').value);
+        if (weight > 0 && height > 0) {
+            const heightM = height / 100;
+            document.getElementById('id_bmi').value = (weight / (heightM * heightM)).toFixed(2);
+        }
+    }
+
+    function calculateWaistHipRatio() {
+        const waist = parseFloat(document.getElementById('id_waist').value);
+        const hip = parseFloat(document.getElementById('id_hip').value);
+        if (waist > 0 && hip > 0) {
+            document.getElementById('id_waist_hip_ratio').value = (waist / hip).toFixed(2);
+        }
+    }
+
+    document.getElementById('id_weight')?.addEventListener('input', calculateBMI);
+    document.getElementById('id_height')?.addEventListener('input', calculateBMI);
+    document.getElementById('id_waist')?.addEventListener('input', calculateWaistHipRatio);
+    document.getElementById('id_hip')?.addEventListener('input', calculateWaistHipRatio);
+</script>
+{% endblock %}
