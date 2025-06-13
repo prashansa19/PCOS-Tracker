@@ -1,6 +1,5 @@
 myenv
 db.sqlite3
-.pkl
 __pycache__
 migrations
 pcos-diagnosis copy.ipynb

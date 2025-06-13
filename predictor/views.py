@@ -40,9 +40,14 @@ def result_view(request, pk):
         for field in instance._meta.fields[1:]
         if getattr(instance, field.name) not in [None, '', []]
     }
-    model = joblib.load('predictor_40.pkl')
     input_data = np.array([list(form_data.values())], dtype=float)
-    prediction = model.predict(input_data).tolist()
+    print('-----------------------------------\nlen of input array:'+str(input_data.shape))
+    if input_data.shape[1]==23:
+        model = joblib.load('predictor_23.pkl')
+        prediction = model.predict(input_data).tolist()
+    else:
+        model = joblib.load('predictor_40.pkl')
+        prediction = model.predict(input_data).tolist()
     if prediction:
         result="You results are positive. You have PCOS"
     else:
