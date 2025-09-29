@@ -1,15 +1,55 @@
-<!-- templates/general.html -->
 {% extends "base.html" %}
 
 {% block title %}General Diagnosis{% endblock %}
 
 {% block extra_css %}
 <style>
-    .form-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 40px 30px; max-width: 900px; margin: auto; }
-    .row > div { margin-bottom: 15px; }
-    label { font-weight: 600; }
-    input[readonly] { background-color: #e9ecef; }
-    .btn-save { width: 150px; margin: 30px auto 0 auto; font-size: 1.1rem; padding: 10px 0; border-radius: 8px; display: block; }
+    .form-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        padding: 40px 30px;
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input, select {
+        height: 30px;
+        width: 100%;
+        padding: 2px 2px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    input:focus, select:focus {
+        border-color: #0d6efd;
+        outline: none;
+    }
+
+    input[readonly] {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .btn-save {
+        width: 200px;
+        font-size: 1.1rem;
+        padding: 12px;
+        border-radius: 8px;
+        display: block;
+        margin: 40px auto 0;
+    }
 </style>
 {% endblock %}
 
@@ -17,8 +57,10 @@
 <div class="container py-5">
     <div class="form-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <a href="{% url 'home' %}" class="btn btn-outline-secondary">&larr; Back to Home</a>
-            <h2 class="m-0 flex-grow-1 text-center">General Diagnosis Form</h2>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">&larr;Home</a>
+            <h2 class="m-0 flex-grow-1 text-center" style="color: palevioletred;">
+                {% if edit %}Edit{% else %}New{% endif %} General Diagnosis Form
+            </h2>            
             <div style="width: 100px;"></div>
         </div>
 
@@ -27,17 +69,32 @@
             <div class="row">
                 <div class="col-md-6">
                     {% for field in form.visible_fields|slice:"0:11" %}
-                        {{ field.label_tag }}<br/>{{ field }}<br/>
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="col-md-6">
                     {% for field in form.visible_fields|slice:"11:" %}
-                        {{ field.label_tag }}<br/>{{ field }}<br/>
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <input type="submit" value="Predict" class="btn btn-success btn-save" />
+            <button type="submit" class="btn btn-success btn-save">
+                {{ edit|yesno:"Update,Predict" }}
+            </button>
+            
         </form>
     </div>
 </div>
@@ -45,26 +102,28 @@
 
 {% block extra_js %}
 <script>
-    function calculateBMI() {
-        const weight = parseFloat(document.getElementById('id_weight').value);
-        const height = parseFloat(document.getElementById('id_height').value);
-        if (weight > 0 && height > 0) {
-            const heightM = height / 100;
-            document.getElementById('id_bmi').value = (weight / (heightM * heightM)).toFixed(2);
+    document.addEventListener("DOMContentLoaded", function () {
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('id_weight')?.value);
+            const height = parseFloat(document.getElementById('id_height')?.value);
+            if (weight > 0 && height > 0) {
+                const heightM = height / 100;
+                document.getElementById('id_bmi').value = (weight / (heightM * heightM)).toFixed(2);
+            }
         }
-    }
 
-    function calculateWaistHipRatio() {
-        const waist = parseFloat(document.getElementById('id_waist').value);
-        const hip = parseFloat(document.getElementById('id_hip').value);
-        if (waist > 0 && hip > 0) {
-            document.getElementById('id_waist_hip_ratio').value = (waist / hip).toFixed(2);
+        function calculateWaistHipRatio() {
+            const waist = parseFloat(document.getElementById('id_waist')?.value);
+            const hip = parseFloat(document.getElementById('id_hip')?.value);
+            if (waist > 0 && hip > 0) {
+                document.getElementById('id_waist_hip_ratio').value = (waist / hip).toFixed(2);
+            }
         }
-    }
 
-    document.getElementById('id_weight')?.addEventListener('input', calculateBMI);
-    document.getElementById('id_height')?.addEventListener('input', calculateBMI);
-    document.getElementById('id_waist')?.addEventListener('input', calculateWaistHipRatio);
-    document.getElementById('id_hip')?.addEventListener('input', calculateWaistHipRatio);
+        document.getElementById('id_weight')?.addEventListener('input', calculateBMI);
+        document.getElementById('id_height')?.addEventListener('input', calculateBMI);
+        document.getElementById('id_waist')?.addEventListener('input', calculateWaistHipRatio);
+        document.getElementById('id_hip')?.addEventListener('input', calculateWaistHipRatio);
+    });
 </script>
 {% endblock %}

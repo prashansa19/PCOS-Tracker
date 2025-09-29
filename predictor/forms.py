@@ -6,19 +6,18 @@ class GeneralForm(forms.ModelForm):
         model=PatientInfo
         fields=["age", "weight", "height", "bmi", "blood_group", "pulse_rate", "rr", 
                 "cycle", "cycle_length", "pregnant", "num_abortions", 
-                "hip", "waist", "waist_hip_ratio", "weight_gain", "hair_growth",
+                "hip", "waist", "weight_gain", "hair_growth",
                 "skin_darkening", "hair_loss", "pimples", "fast_food", 
                 "regular_exercise", "bp_systolic", "bp_diastolic",]
         widgets = {
-            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'}),
-            'waist_hip_ratio': forms.NumberInput(attrs={'readonly': 'readonly'}),
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
         }
-
+#waist_hip_ratio
 class MedicalForm(forms.ModelForm):
     class Meta:
         model=PatientInfo
         fields='__all__'
         widgets = {
-            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'}),
-            'waist_hip_ratio': forms.NumberInput(attrs={'readonly': 'readonly'}),
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
         }
+        exclude = ['waist_hip_ratio']

@@ -6,7 +6,7 @@
 {% block extra_css %}
 <style>
     .full-height-center { display: flex; align-items: center; justify-content: center; height: 100vh; }
-    .hero { padding: 80px 40px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: auto; }
+    .hero { padding: 40px 40px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: auto; }
     .hero h1 { font-size: 3rem; margin-bottom: 20px; font-weight: bold; }
     .option-box { background-color: #f1f5f9; border-radius: 10px; padding: 20px; margin-bottom: 30px; }
     .btn-choice { padding: 15px 30px; font-size: 1.1rem; border-radius: 8px; min-width: 220px; }
@@ -17,7 +17,20 @@
 <div class="full-height-center">
     <div class="container">
         <div class="hero">
+            {% if user.is_authenticated %}
+            <h5 style="text-align: right;">
+                <a href="{% url 'history' %}" class="btn btn-outline-secondary">History</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Log Out</a>
+            </h5>
+            <h1 style="text-align: center; color: palevioletred;">Hi {{ user.username }}!</h1>
+            <h1 style="text-align: center; color: palevioletred;" class="">Welcome to PCOS Predictor</h1>
+            {% else %}
+            <h5 style="text-align: right;">
+                <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                </h5>
             <h1 style="text-align: center;">Welcome to PCOS Predictor</h1>
+            {% endif %}
             <p>This tool is designed to help identify potential signs of Polycystic Ovary Syndrome (PCOS) 
                 using intelligent analysis and personalized diagnostics. Please read below to understand your options.</p>
 
@@ -31,12 +44,13 @@
                 <p>This form is for patients and doctors who can provide detailed medical data such as hormone levels,
                      ultrasound results, and blood test values. It offers a more accurate and informed prediction.</p>
             </div>
-
+            {% if user.is_authenticated %}
             <p class="fw-semibold mt-4 mb-3" style="text-align: center;">Choose one to continue:</p>
             <div class="d-flex justify-content-center gap-4 flex-wrap">
                 <a href="{% url 'general_create_view' %}" class="btn btn-outline-success btn-choice">General Diagnosis</a>
                 <a href="{% url 'medical_create_view' %}" class="btn btn-outline-primary btn-choice">Medical Diagnosis</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

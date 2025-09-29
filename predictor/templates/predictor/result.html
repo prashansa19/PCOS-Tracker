@@ -1,40 +1,58 @@
-{% extends 'base.html' %}
 
-{% block title %}Results{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Result | PCOS Predictor{% endblock %}
+
+{% block extra_css %}
+<style>
+    .full-height-center { display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .hero { padding: 40px 40px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: auto; }
+    .hero h1 { font-size: 3rem; margin-bottom: 20px; font-weight: bold; }
+    .option-box { background-color: #f1f5f9; border-radius: 10px; padding: 20px; margin-bottom: 30px; }
+    .btn-choice { padding: 15px 30px; font-size: 1.1rem; border-radius: 8px; min-width: 220px; }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{% url 'home' %}" class="btn btn-outline-secondary">&larr; Back to Home</a>
-        <h2 class="m-0 flex-grow-1 text-center">Prediction Results</h2>
-        <div style="width: 100px;"></div>
-    </div>
-
-    <!-- Displaying form input values in scrollable table -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <strong>Submitted Information</strong>
+<div class="full-height-center">
+    <div class="container">
+        <div class="hero">
+            <div class="container mt-5">
+                <div class="justify-content-between align-items-center mb-4">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Home</a>
+                    <a href="{% url 'history' %}" class="btn btn-outline-secondary">History</a>
+                    <h2 class="m-0 flex-grow-1 text-center">Prediction Results</h2>
+                    <div style="width: 100px;"></div>
+                </div>
+            
+                <!-- Displaying form input values in scrollable table -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <strong>Submitted Information</strong>
+                    </div>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped mb-0">
+                            <tbody>
+                                {% for key, value in form_data.items %}
+                                    {% if value is not None and value != '' %}
+                                    <tr>
+                                        <th class="fw-semibold" style="min-width: 200px;">{{ key|capfirst|cut:"_" }}</th>
+                                        <td>{{ value }}</td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+                <!-- Displaying result -->
+                <div class="card bg-light p-4 text-center shadow-lg">
+                    <h4 class="mb-3">Prediction Result:</h4>
+                    <h3 class=" text-primary">{{ result }}</h3>
+                </div>
+            </div>
         </div>
-        <div style="max-height: 400px; overflow-y: auto;">
-            <table class="table table-striped mb-0">
-                <tbody>
-                    {% for key, value in form_data.items %}
-                        {% if value is not None and value != '' %}
-                        <tr>
-                            <th class="fw-semibold" style="min-width: 200px;">{{ key|capfirst|cut:"_" }}</th>
-                            <td>{{ value }}</td>
-                        </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Displaying result -->
-    <div class="card bg-light p-4 text-center shadow-lg">
-        <h4 class="mb-3">Prediction Result:</h4>
-        <h1 class="display-4 text-primary">{{ result }}</h1>
     </div>
 </div>
 {% endblock %}

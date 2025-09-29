@@ -129,7 +129,6 @@ pip install -r requirements.txt
 ### 3. Run Django Server
 
 ```bash
-cd pcos_django
 python manage.py runserver
 ```
 
