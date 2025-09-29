@@ -34,42 +34,6 @@ This project uses **Machine Learning** to diagnose **Polycystic Ovary Syndrome (
 
 ---
 
-## 📁 Project Structure
-
-```
-pcos-diagnosis/
-│
-├── ML/
-│   ├── PCOS_Diagnosis.ipynb        ← Full analysis & model building
-│   ├── predictor_40.pkl            ← Random Forest model (all 40 features)
-│   ├── predictor_23.pkl            ← Lightweight model (23 features)
-│   └── dataset/                    ← Raw CSV/XLSX datasets
-│
-├── pcos_django/
-│   ├── manage.py
-│   ├── pcos_django/
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   ├── predictor/
-│   │   ├── views.py
-│   │   ├── urls.py
-│   │   ├── forms.py
-│   │   ├── templates/
-│   │   │   ├── home.html
-│   │   │   ├── result.html
-│   │   │   └── about.html
-│   │   └── static/
-│   │       └── css/
-│   └── models/
-│       └── predictor_40.pkl
-│       └── predictor_23.pkl
-│
-├── requirements.txt
-└── README.md
-```
-
----
 
 ## 🔧 ML Workflow
 
